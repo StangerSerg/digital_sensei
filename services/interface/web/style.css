@@ -444,3 +444,56 @@ input[type=range]::-webkit-slider-thumb {
     font-size: 0.9rem;
     color: #ccc;
 }
+
+.metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.metrics-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.metrics-list::-webkit-scrollbar-track {
+    background: #404040;
+    border-radius: 4px;
+}
+
+.metrics-list::-webkit-scrollbar-thumb {
+    background: #005f4e;
+    border-radius: 4px;
+}
+
+.sidebar {
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.metrics-section {
+    margin-bottom: 20px;
+}
+
+.recommendations {
+    margin-top: 20px;
+    padding: 16px;
+    background: #2a2a2a;
+    border-radius: 12px;
+    border-left: 4px solid #005f4e;
+}
+
+.recommendations h4 {
+    margin: 0 0 10px 0;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.recommendations p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+}
