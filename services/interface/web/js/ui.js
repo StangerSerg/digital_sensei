@@ -98,15 +98,11 @@ function initUI() {
     console.log('initUI started');
     
     initSliders();
-    console.log('initSliders OK');
-
+    
     // Открытие модалки
     const openReportBtn = document.getElementById('openReportBtn');
     if (openReportBtn) {
-        openReportBtn.addEventListener('click', () => {
-            console.log('openReportBtn clicked');
-            openReportModal();
-        });
+        openReportBtn.addEventListener('click', openReportModal);
     }
     
     // Закрытие модалки
@@ -118,7 +114,7 @@ function initUI() {
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeReportModal);
     if (overlay) overlay.addEventListener('click', closeReportModal);
 
-    // Кнопка отправки отчёта в модалке
+    // Кнопка отправки отчета в модалке
     const submitReportBtn = document.getElementById('submitReportBtn');
     console.log('submitReportBtn found:', submitReportBtn !== null);
     if (submitReportBtn) {
@@ -131,7 +127,7 @@ function initUI() {
             }
         });
     }
-    
+
     // Enter в поле ввода для утра
     const messageInput = document.getElementById('messageInput');
     if (messageInput) {
@@ -141,6 +137,20 @@ function initUI() {
             }
         });
     }
+
+    const sendMorningBtn = document.getElementById('sendMorningBtn');
+    console.log('sendMorningBtn found:', sendMorningBtn !== null);
+    if (sendMorningBtn) {
+        sendMorningBtn.addEventListener('click', () => {
+            console.log('sendMorningBtn clicked');
+            if (typeof window.sendMorningDeclaration === 'function') {
+                window.sendMorningDeclaration();
+            } else {
+                console.error('window.sendMorningDeclaration is not a function');
+            }
+        });
+    }
+
     
     // Закрытие по Escape
     document.addEventListener('keydown', (e) => {
