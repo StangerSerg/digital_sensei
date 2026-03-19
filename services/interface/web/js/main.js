@@ -42,7 +42,7 @@ async function loadDashboard() {
     }
 }
 
-// Утренняя декларация
+// Утренняя декларация (обработчик)
 async function sendMorningDeclaration() {
     const messageInput = document.getElementById('messageInput');
     if (!messageInput) return;
@@ -53,11 +53,11 @@ async function sendMorningDeclaration() {
     addMessage(text, 'user');
     messageInput.value = '';
     
-    const response = await sendMorningDeclarationAPI(USER_ID, text);
+    const response = await apiSendMorning(USER_ID, text);
     addMessage(response.reply, 'bot');
 }
 
-// Вечерний отчёт
+// Вечерний отчёт (обработчик)
 async function submitEveningReport() {
     const reportText = document.getElementById('reportText');
     if (!reportText) return;
@@ -73,7 +73,7 @@ async function submitEveningReport() {
     
     closeReportModal();
     
-    const response = await sendEveningReport(USER_ID, finalReport, metrics);
+    const response = await apiSendEvening(USER_ID, finalReport, metrics);
     addMessage(response.reply, 'bot');
     
     // Обновить данные после отчёта
@@ -86,7 +86,7 @@ const GREETING = '🏯 <b>ЗВОН КОЛОКОЛА</b> 🏯<br><br>' +
     '<b>Сенсей-Стратег:</b> "Новый ученик... Карты уже готовы показать твой путь."<br>' +
     '<b>Сенсей-Строгий:</b> (кладёт руку на меч) "Говори свою цель. Без воды."';
 
-// Делаем функции глобальными для доступа из UI
+// Для доступа из UI
 window.sendMorningDeclaration = sendMorningDeclaration;
 window.submitEveningReport = submitEveningReport;
 
