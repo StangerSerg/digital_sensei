@@ -19,7 +19,7 @@ Digital Sensei помогает пользователям:
 - Исследование методов удержания пользователей
 
 ## Архитектура
-Telegram Bot (aiogram) → API Gateway → Оркестратор → RabbitMQ
+Web-интерфейс → API Gateway → Оркестратор → RabbitMQ
 ↓
 Менеджеры (воркеры)
 ↓
