@@ -98,11 +98,15 @@ function initUI() {
     console.log('initUI started');
     
     initSliders();
-    
+    console.log('initSliders OK');
+
     // Открытие модалки
     const openReportBtn = document.getElementById('openReportBtn');
     if (openReportBtn) {
-        openReportBtn.addEventListener('click', openReportModal);
+        openReportBtn.addEventListener('click', () => {
+            console.log('openReportBtn clicked');
+            openReportModal();
+        });
     }
     
     // Закрытие модалки
@@ -113,6 +117,20 @@ function initUI() {
     if (closeBtn) closeBtn.addEventListener('click', closeReportModal);
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeReportModal);
     if (overlay) overlay.addEventListener('click', closeReportModal);
+
+    // Кнопка отправки отчёта в модалке
+    const submitReportBtn = document.getElementById('submitReportBtn');
+    console.log('submitReportBtn found:', submitReportBtn !== null);
+    if (submitReportBtn) {
+        submitReportBtn.addEventListener('click', () => {
+            console.log('submitReportBtn clicked');
+            if (typeof window.submitEveningReport === 'function') {
+                window.submitEveningReport();
+            } else {
+                console.error('window.submitEveningReport is not a function');
+            }
+        });
+    }
     
     // Enter в поле ввода для утра
     const messageInput = document.getElementById('messageInput');
@@ -181,8 +199,11 @@ function renderSwordMetrics(sword) {
 // Отрисовка рекомендаций
 function renderRecommendations(recs) {
     const container = document.getElementById('recommendations');
-    if (!container || !recs || recs.length === 0) return;
+    if (!container || !recs || recs.length === 0) {
+        container.innerHTML = ''; // очищаем, если нет рекомендаций
+        return;
+    }
     
-    container.innerHTML = '<h4>📋 СОВЕТЫ</h4>' + 
+    container.innerHTML = '<h4>📋 СОВЕТЫ СЕНСЕЕВ</h4>' + 
         recs.map(r => `<p>• ${r}</p>`).join('');
 }
