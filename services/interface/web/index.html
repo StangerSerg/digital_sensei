@@ -30,14 +30,16 @@
         <!-- Метрики Бусидо (7 принципов) -->
         <div class="metrics-section">
             <h3>⚔️ МЕТРИКИ ПУТИ</h3>
-            <div id="bushidoMetrics" class="bushido-list">
+            <div id="bushidoMetrics" class="metrics-list">
+                <!-- будут заполнены js -->
             </div>
         </div>
 
         <!-- Метрики Меча (пользовательские) -->
         <div class="metrics-section">
             <h3>🗡️ МЕТРИКИ МЕЧА</h3>
-            <div id="swordMetrics" class="sword-list">
+            <div id="swordMetrics" class="metrics-list">
+                <!-- будут заполнены js -->
             </div>
         </div>
 
@@ -94,9 +96,64 @@
         </div>
     </div>
 
-    <!-- Затемнение фона и модалка -->
+    <!-- Затемнение фона -->
     <div id="modalOverlay" class="modal-overlay"></div>
-    <div id="reportModal" class="modal"><!-- ... содержимое модалки ... --></div>
+    
+    <!-- Модальное окно для вечернего отчёта -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌙 Вечерний отчёт</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Метрики в модалке -->
+                <div class="modal-metrics-summary">
+                    <h3>Твои метрики сегодня:</h3>
+                    <div class="modal-metrics">
+                        <div class="modal-metric">
+                            <span class="modal-metric-name">⚡ Энергия</span>
+                            <span class="modal-metric-value" id="modalEnergy">7</span>
+                        </div>
+                        <div class="modal-metric">
+                            <span class="modal-metric-name">🏃 Движение</span>
+                            <span class="modal-metric-value" id="modalMovement">6</span>
+                        </div>
+                        <div class="modal-metric">
+                            <span class="modal-metric-name">👁️ Ясность</span>
+                            <span class="modal-metric-value" id="modalClarity">8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Поле для отчёта -->
+                <div class="modal-report">
+                    <label for="reportText">📝 Опиши, как прошёл день:</label>
+                    <textarea 
+                        id="reportText" 
+                        rows="6" 
+                        placeholder="Что сделал? С чем столкнулся? Какие мысли посетили?"
+                    ></textarea>
+                </div>
+                
+                <!-- Подсказки -->
+                <div class="modal-tips">
+                    <p>💡 <em>Можно написать о:</em></p>
+                    <ul>
+                        <li>Что получилось сегодня?</li>
+                        <li>С какими трудностями столкнулся?</li>
+                        <li>Что понял о себе или своём пути?</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" id="closeModalBtn">Отмена</button>
+                <button class="modal-btn modal-btn-primary" id="submitReportBtn">🌙 Отправить отчёт</button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/utils.js"></script>
     <script src="js/api.js"></script>
