@@ -1,13 +1,13 @@
-const API_BASE = 'http://localhost:8000/api/v1/web';  // внешний префикс
+const API_BASE = 'http://localhost:8000/api/v1/web';
 
-// Получить данные пользователя при загрузке
-async function fetchUserData(userId) {
+// Данные пользователя одним запросом
+async function fetchDashboard(userId) {
     try {
-        const response = await fetch(`${API_BASE}/user/${userId}/stats`);
+        const response = await fetch(`${API_BASE}/user/${userId}/dashboard`);
         if (!response.ok) throw new Error('Network response was not ok');
         return await response.json();
     } catch (error) {
-        console.error('Ошибка загрузки данных пользователя:', error);
+        console.error('Ошибка загрузки данных:', error);
         return null;
     }
 }
@@ -20,7 +20,6 @@ async function sendMorningDeclaration(userId, declaration) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: userId, declaration })
         });
-        if (!response.ok) throw new Error('Network response was not ok');
         return await response.json();
     } catch (error) {
         console.error('Ошибка отправки декларации:', error);
@@ -34,13 +33,8 @@ async function sendEveningReport(userId, report, metrics) {
         const response = await fetch(`${API_BASE}/evening`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: userId,
-                report,
-                metrics
-            })
+            body: JSON.stringify({ user_id: userId, report, metrics })
         });
-        if (!response.ok) throw new Error('Network response was not ok');
         return await response.json();
     } catch (error) {
         console.error('Ошибка отправки отчёта:', error);
