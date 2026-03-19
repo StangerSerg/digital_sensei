@@ -12,8 +12,8 @@ async function fetchDashboard(userId) {
     }
 }
 
-// Отправить утреннюю декларацию
-async function sendMorningDeclaration(userId, declaration) {
+// Отправить утреннюю декларацию (API)
+async function apiSendMorning(userId, declaration) {
     try {
         const response = await fetch(`${API_BASE}/morning`, {
             method: 'POST',
@@ -27,8 +27,8 @@ async function sendMorningDeclaration(userId, declaration) {
     }
 }
 
-// Отправить вечерний отчёт
-async function sendEveningReport(userId, report, metrics) {
+// Отправить вечерний отчёт (API)
+async function apiSendEvening(userId, report, metrics) {
     try {
         const response = await fetch(`${API_BASE}/evening`, {
             method: 'POST',
