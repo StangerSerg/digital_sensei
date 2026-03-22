@@ -30,7 +30,9 @@ services:
       - ./services/api-gateway:/api-gateway
     networks:
       - ds-network
-      -
+    depends_on:
+      - redis
+
   redis:
     image: redis:7-alpine
     container_name: ds-redis
@@ -41,6 +43,7 @@ services:
       - redis_data:/data
     networks:
       - ds-network
+
 networks:
   ds-network:
     driver: bridge
