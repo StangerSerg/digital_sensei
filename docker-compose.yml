@@ -1,5 +1,3 @@
-version: '3.8'
-
 name: digital-sensei
 
 services:
@@ -47,3 +45,6 @@ services:
 networks:
   ds-network:
     driver: bridge
+
+volumes:
+  redis_data:
