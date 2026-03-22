@@ -1,0 +1,46 @@
+version: '3.8'
+
+name: digital-sensei
+
+services:
+  frontend:
+    build:
+      context: ./services/interface
+      dockerfile: web/Dockerfile
+    container_name: ds-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+    networks:
+      - ds-network
+
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: ds-api-gateway
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./services/api-gateway:/api-gateway
+    networks:
+      - ds-network
+      -
+  redis:
+    image: redis:7-alpine
+    container_name: ds-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - ds-network
+networks:
+  ds-network:
+    driver: bridge
