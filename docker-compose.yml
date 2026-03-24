@@ -42,6 +42,23 @@ services:
     networks:
       - ds-network
 
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+    container_name: ds-orchestrator
+    ports:
+      - "8001"
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./services/orchestrator:/orchestrator
+    networks:
+      - ds-network
+    depends_on:
+      - redis
+      -
 networks:
   ds-network:
     driver: bridge
