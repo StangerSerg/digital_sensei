@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt \
     --trusted-host pypi.tuna.tsinghua.edu.cn \
     --timeout 100
 COPY . .
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
