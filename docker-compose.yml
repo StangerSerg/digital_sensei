@@ -2,7 +2,7 @@ name: digital-sensei
 
 services:
   frontend:
-    image: ghcr.io/stangerserg/digital-sensei/frontend:latest
+    image: ghcr.io/stangerserg/digital_sensei/frontend:latest
     container_name: ds-frontend
     ports:
       - "8080:80"
@@ -11,7 +11,7 @@ services:
       - ds-network
 
   api-gateway:
-    image: ghcr.io/stangerserg/digital-sensei/api-gateway:latest
+    image: ghcr.io/stangerserg/digital_sensei/api-gateway:latest
     container_name: ds-api-gateway
     ports:
       - "8000:8000"
@@ -25,7 +25,7 @@ services:
       - orchestrator
 
   orchestrator:
-    image: ghcr.io/stangerserg/digital-sensei/orchestrator:latest
+    image: ghcr.io/stangerserg/digital_sensei/orchestrator:latest
     container_name: ds-orchestrator
     expose:
       - "8001"
