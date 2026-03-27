@@ -2,30 +2,36 @@ name: digital-sensei
 
 services:
   frontend:
-    build:
-      context: ./services/interface
-      dockerfile: web/Dockerfile
+    image: ghcr.io/stangerserg/digital-sensei/frontend:latest
     container_name: ds-frontend
     ports:
       - "8080:80"
     restart: unless-stopped
-    depends_on:
-      - api-gateway
     networks:
       - ds-network
 
   api-gateway:
-    build:
-      context: ./services/api-gateway
-      dockerfile: Dockerfile
+    image: ghcr.io/stangerserg/digital-sensei/api-gateway:latest
     container_name: ds-api-gateway
     ports:
       - "8000:8000"
     restart: unless-stopped
     env_file:
       - .env
-    volumes:
-      - ./services/api-gateway:/api-gateway
+    networks:
+      - ds-network
+    depends_on:
+      - redis
+      - orchestrator
+
+  orchestrator:
+    image: ghcr.io/stangerserg/digital-sensei/orchestrator:latest
+    container_name: ds-orchestrator
+    expose:
+      - "8001"
+    restart: unless-stopped
+    env_file:
+      - .env
     networks:
       - ds-network
     depends_on:
@@ -41,23 +47,6 @@ services:
       - redis_data:/data
     networks:
       - ds-network
-
-  orchestrator:
-    build:
-      context: ./services/orchestrator
-      dockerfile: Dockerfile
-    container_name: ds-orchestrator
-    ports:
-      - "8001"
-    restart: unless-stopped
-    env_file:
-      - .env
-    volumes:
-      - ./services/orchestrator:/orchestrator
-    networks:
-      - ds-network
-    depends_on:
-      - api-gateway
 
 networks:
   ds-network:
