@@ -48,9 +48,52 @@ services:
     networks:
       - ds-network
 
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: ds-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: sensei
+      RABBITMQ_DEFAULT_PASS: sensei
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ds-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:15
+    container_name: ds-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sensei
+      POSTGRES_PASSWORD: sensei
+      POSTGRES_DB: digital_sensei
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ds-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sensei"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   ds-network:
     driver: bridge
 
 volumes:
   redis_data:
+  rabbitmq_data:
+  postgres_data:
