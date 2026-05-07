@@ -28,8 +28,8 @@ class RabbitMQClient:
             )
         # Dead Letter Exchange
         await self.channel.declare_exchange("dlx", aio_pika.ExchangeType.DIRECT, durable=True)
-        await self.channel.declare_queue("dead_letters", durable=True)
-        await self.channel.queue_bind("dead_letters", "dlx", routing_key="#")
+        dead_letter_queue = await self.channel.declare_queue("dead_letters", durable=True)
+        await dead_letter_queue.bind("dlx", routing_key="#")
 
     async def publish(self, queue: str, data: dict):
         await self.channel.default_exchange.publish(
