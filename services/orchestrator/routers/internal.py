@@ -21,7 +21,7 @@ async def init_user(req: InitRequest):
 
     # Отправляем в RabbitMQ
     rabbit = get_rabbit()
-    await producers.send_init_task(rabbit, req, task_counter)
+    await producer.send_init_task(rabbit, req, task_counter)
 
     return {"status": "accepted", "task_id": task_counter}
 
@@ -33,7 +33,7 @@ async def morning_declaration(req: MorningRequest):
     print(f"[morning] task {task_counter}: user {req.user_id}")
 
     rabbit = get_rabbit()
-    await producers.send_morning_task(rabbit, req, task_counter)
+    await producer.send_morning_task(rabbit, req, task_counter)
 
     return {"status": "accepted", "task_id": task_counter}
 
@@ -45,7 +45,7 @@ async def evening_report(req: EveningRequest):
     print(f"[evening] task {task_counter}: user {req.user_id}")
 
     rabbit = get_rabbit()
-    await producers.send_evening_task(rabbit, req, task_counter)
+    await producer.send_evening_task(rabbit, req, task_counter)
 
     return {"status": "accepted", "task_id": task_counter}
 
