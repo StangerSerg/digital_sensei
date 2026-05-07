@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from models.requests import InitRequest, MorningRequest, EveningRequest
-from queues import producers
+from queues import producer
 
 router = APIRouter(prefix="/api/orc/v1", tags=["internal"])
 
