@@ -1,20 +1,21 @@
 import aio_pika
 import json
-from typing import Optional
+from typing import Any
 
 class RabbitMQClient:
     def __init__(self, url: str):
         self.url = url
-        self.connection: Optional[aio_pika.Connection] = None
-        self.channel: Optional[aio_pika.Channel] = None
+        self.connection: aio_pika.Connection | None = None
+        self.channel: aio_pika.Channel | None = None
 
     async def connect(self):
+        """Подключение к RabbitMQ и создание очередей"""
         self.connection = await aio_pika.connect_robust(self.url)
         self.channel = await self.connection.channel()
         await self._declare_queues()
 
     async def _declare_queues(self):
-        # Очереди
+        """Создаёт очереди с Dead Letter Exchange"""
         queues = ["init_queue", "daily_queue", "report_queue"]
         for q in queues:
             await self.channel.declare_queue(

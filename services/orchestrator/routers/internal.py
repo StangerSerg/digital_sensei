@@ -1,22 +1,54 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from models.requests import InitRequest, MorningRequest, EveningRequest
+from queues import producers
 
 router = APIRouter(prefix="/api/orc/v1", tags=["internal"])
 
+task_counter = 0
+
+
+def get_rabbit():
+    """Зависимость: будет передана из main.py"""
+    from main import rabbitmq_client
+    return rabbitmq_client
+
+
 @router.post("/init")
 async def init_user(req: InitRequest):
-    print(f"[init] user {req.user_id}, goal: {req.goal}")
-    return await plug_init(req)
+    global task_counter
+    task_counter += 1
+    print(f"[init] task {task_counter}: user {req.user_id}")
+
+    # Отправляем в RabbitMQ
+    rabbit = get_rabbit()
+    await producers.send_init_task(rabbit, req, task_counter)
+
+    return {"status": "accepted", "task_id": task_counter}
+
 
 @router.post("/morning")
 async def morning_declaration(req: MorningRequest):
-    print(f"[morning] user {req.user_id}")
-    return await plug_morning(req)
+    global task_counter
+    task_counter += 1
+    print(f"[morning] task {task_counter}: user {req.user_id}")
+
+    rabbit = get_rabbit()
+    await producers.send_morning_task(rabbit, req, task_counter)
+
+    return {"status": "accepted", "task_id": task_counter}
+
 
 @router.post("/evening")
 async def evening_report(req: EveningRequest):
-    print(f"[evening] user {req.user_id}")
-    return await plug_evening(req)
+    global task_counter
+    task_counter += 1
+    print(f"[evening] task {task_counter}: user {req.user_id}")
+
+    rabbit = get_rabbit()
+    await producers.send_evening_task(rabbit, req, task_counter)
+
+    return {"status": "accepted", "task_id": task_counter}
+
 
 @router.get("/user/{user_id}/dashboard")
 async def get_dashboard(user_id: int):
