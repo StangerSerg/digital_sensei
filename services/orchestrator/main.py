@@ -6,13 +6,12 @@ from core.config import settings
 from core.rabbitmq import RabbitMQClient
 from routers import health, internal
 
-rabbitmq_client: RabbitMQClient | None = None
+rabbitmq_client = RabbitMQClient(settings.rabbitmq_url)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ===== STARTUP =====
-    rabbitmq_client = RabbitMQClient(settings.rabbitmq_url)
     await rabbitmq_client.connect()
     print(f"{settings.service_name} starting on {settings.host}:{settings.port}")
     yield

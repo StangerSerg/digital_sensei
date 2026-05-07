@@ -11,7 +11,7 @@ async def send_init_task(rabbit: RabbitMQClient, req: InitRequest, task_id: int)
     })
 
 async def send_morning_task(rabbit: RabbitMQClient, req: MorningRequest, task_id: int):
-    await rabbit.publish("daily_queue", {
+    await rabbit.publish("morning_queue", {
         "task_id": task_id,
         "user_id": req.user_id,
         "declaration": req.declaration

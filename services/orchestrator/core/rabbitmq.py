@@ -16,7 +16,7 @@ class RabbitMQClient:
 
     async def _declare_queues(self):
         """Создаёт очереди с Dead Letter Exchange"""
-        queues = ["init_queue", "daily_queue", "report_queue"]
+        queues = ["init_queue", "morning_queue", "report_queue"]
         for q in queues:
             await self.channel.declare_queue(
                 q,
