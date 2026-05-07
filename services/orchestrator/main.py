@@ -1,23 +1,27 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic_settings import BaseSettings
-from routers import internal
 
-class Settings(BaseSettings):
-    service_name: str = "orchestrator"
-    debug: bool = True
-    host: str = "0.0.0.0"
-    port: int = 8001
+from core.config import settings
+from routers import health, internal
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
-settings = Settings()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ===== STARTUP =====
+    print(f"{settings.service_name} starting on {settings.host}:{settings.port}")
+    yield
+    # ===== SHUTDOWN =====
+    print(f"{settings.service_name} shutting down")
 
-app = FastAPI(title=settings.service_name, debug=settings.debug)
 
-# CORS (для внутренних вызовов)
+app = FastAPI(
+    title=settings.service_name,
+    debug=settings.debug,
+    lifespan=lifespan
+)
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,4 +31,5 @@ app.add_middleware(
 )
 
 # Подключаем роутеры
+app.include_router(health.router)
 app.include_router(internal.router)

@@ -1,24 +1,32 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from typing import Dict, Optional, List
-from datetime import datetime
+from fastapi import APIRouter
+from models.requests import InitRequest, MorningRequest, EveningRequest
 
 router = APIRouter(prefix="/api/orc/v1", tags=["internal"])
 
-# ===== Pydantic модели =====
-class MorningRequest(BaseModel):
-    user_id: int
-    declaration: str
+@router.post("/init")
+async def init_user(req: InitRequest):
+    print(f"[init] user {req.user_id}, goal: {req.goal}")
+    return await plug_init(req)
 
-class EveningRequest(BaseModel):
-    user_id: int
-    report: str
-    metrics: Dict[str, int]
+@router.post("/morning")
+async def morning_declaration(req: MorningRequest):
+    print(f"[morning] user {req.user_id}")
+    return await plug_morning(req)
 
-# ===== Заглушки =====
+@router.post("/evening")
+async def evening_report(req: EveningRequest):
+    print(f"[evening] user {req.user_id}")
+    return await plug_evening(req)
 
 @router.get("/user/{user_id}/dashboard")
 async def get_dashboard(user_id: int):
+    """Заглушка"""
+    return await plug_dashboard(user_id)
+
+
+# ===== Заглушки =====
+
+async def plug_dashboard(user_id: int):
     """Заглушка дашборда"""
     return {
         "user": {
@@ -53,8 +61,7 @@ async def get_dashboard(user_id: int):
     }
 
 
-@router.post("/morning")
-async def morning(req: MorningRequest):
+async def plug_morning(req: MorningRequest):
     """Заглушка утренней декларации"""
     return {
         "reply": f"🌅 Принято, воин. Твоя цель на сегодня: '{req.declaration[:50]}...' Да пребудет с тобой сила!",
@@ -63,8 +70,7 @@ async def morning(req: MorningRequest):
     }
 
 
-@router.post("/evening")
-async def evening(req: EveningRequest):
+async def plug_evening(req: EveningRequest):
     """Заглушка вечернего отчёта"""
     metrics_text = f"⚡{req.metrics.get('energy', 0)} 🏃{req.metrics.get('movement', 0)} 👁️{req.metrics.get('clarity', 0)}"
     return {
@@ -74,6 +80,7 @@ async def evening(req: EveningRequest):
     }
 
 
-@router.get("/health")
-async def health():
-    return {"status": "ok", "service": "orchestrator"}
+async def plug_init(req: InitRequest):
+    return {
+        "reply": f"🌅 Принято, воин. Сенсеи подумают, какие метрики тебе назначить"
+    }

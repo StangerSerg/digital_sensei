@@ -1,11 +1,10 @@
 from pydantic import BaseModel
-from typing import Dict, List, Optional
 
 class InitRequest(BaseModel):
     user_id: int
     name: str
     goal: str
-    custom_metrics: Optional[List[str]] = []
+    custom_metrics: list[str] = []
 
 class MorningRequest(BaseModel):
     user_id: int
@@ -14,4 +13,4 @@ class MorningRequest(BaseModel):
 class EveningRequest(BaseModel):
     user_id: int
     report: str
-    metrics: Dict[str, int]
+    metrics: dict[str, int]
