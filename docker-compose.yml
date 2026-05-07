@@ -25,7 +25,7 @@ services:
       - orchestrator
 
   orchestrator:
-    image: ghcr.io/stangerserg/digital_sensei/orchestrator:latest
+    image: ghcr.io/stangerserg/ds-orchestrator:latest
     container_name: ds-orchestrator
     expose:
       - "8001"
